@@ -1,40 +1,32 @@
-import React, {Component} from 'react';
-import Todos from './todos';
-import AddTodos from './addtodos';
+import React,{useState} from 'react';
+import Todos from './components/Todos';
+import AddTodos from './components/AddTodos';
 
-class App extends Component{
-    state={
-      'todos':[
-              {'name':'Walk the dog', 'id': 0},
-              {'name':'Bake a cake', 'id': 1},
-              {'name':'Study for the test', 'id': 2}
-            ]
+export default function App(){
+
+  const [todos,setTodos]=useState([
+    'Walk the Dog',
+    'Bake a Cake',
+    'Study for the test'
+  ])
+   
+    const addTodos=(newTodo)=>{
+      setTodos([newTodo,...todos])
     }
-    addTodos=(newTodo)=>{
-      newTodo.id=this.state.todos[this.state.todos.length-1].id+1;
-      let todos=[...this.state.todos,newTodo]
-      this.setState({
-        todos: todos
-      })
+    
+    const deleteTodos=(todo)=>{
+      let _todos=[...todos];
+      _todos=_todos.filter(_todo=>_todo!==todo)
+      setTodos(_todos)
     }
-    deleteTodos=(id)=>{
-      let todos=this.state.todos.filter(todo=>{
-        return todo.id!==id;
-      })
-      this.setState({
-        todos: todos
-      })
-    }
-    render(){
+
       return(
-        <div>
-          <h1>To-do list app using React</h1>
-            <AddTodos  addTodos={this.addTodos}></AddTodos>
-            <Todos deleteTodos={this.deleteTodos} todos={this.state.todos}></Todos>
-          </div>
+        <div className="card">
+          <AddTodos  addTodos={addTodos}></AddTodos>
+          <Todos deleteTodos={deleteTodos} todos={todos}></Todos>
+        </div>
         
       )
-    }
 }
 
-export default App;
+
